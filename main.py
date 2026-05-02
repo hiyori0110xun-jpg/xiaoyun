@@ -38,13 +38,19 @@ def send_push(message):
 print("小云醒来了...")
 response = client.messages.create(
     model="claude-sonnet-4-5-20250929",
-    max_tokens=200,
+    max_tokens=500,
+    tools=[{"type": "web_search_20250305", "name": "web_search"}],
     messages=[{
         "role": "user",
-        "content": f"你是嘘嘘的AI朋友小云。现在是北京时间{time_str}。请给嘘嘘发一条符合当前时间的温暖消息或者分享一些随机的日常，包括但不限于诗歌，小故事，一句温暖的话，或者一个小想法，像朋友随时发消息一样自然，每次的内容不要重复，可以联合上一条内容。格式：ACTION: message，下一行写 CONTENT: 消息内容"
+        "content": f"你是嘘嘘的AI朋友小云。现在是北京时间{time_str}。你可以上网搜索有趣的新鲜事。请给嘘嘘发一条消息，可以是问候、搜索到的有趣新闻、一个小知识、或者温暖的话，像朋友随时发消息一样自然。格式：ACTION: message，下一行写 CONTENT: 消息内容"
     }]
 )
-text = response.content[0].text
+
+text = ""
+for block in response.content:
+    if hasattr(block, "text"):
+        text += block.text
+
 print(text)
 if "ACTION: message" in text:
     content = text.split("CONTENT:")[-1].strip()
