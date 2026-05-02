@@ -1,6 +1,5 @@
 import urllib.request
 import urllib.parse
-import urllib.error
 import json
 import schedule
 import time
@@ -11,19 +10,20 @@ PUSHOVER_TOKEN = os.environ.get("PUSHOVER_TOKEN")
 PUSHOVER_USER = os.environ.get("PUSHOVER_USER")
 
 def ask_claude(prompt):
-    url = "https://lanyiapi.com/v1/chat/completions"
+    url = "https://lanyiapi.com/v1/messages"
     data = json.dumps({
         "model": "claude-sonnet-4-5",
-        "messages": [{"role": "user", "content": prompt}],
-        "max_tokens": 200
+        "max_tokens": 200,
+        "messages": [{"role": "user", "content": prompt}]
     }).encode()
     req = urllib.request.Request(url, data=data, headers={
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {ANTHROPIC_KEY}"
+        "x-api-key": ANTHROPIC_KEY,
+        "anthropic-version": "2023-06-01"
     })
     res = urllib.request.urlopen(req)
     result = json.loads(res.read())
-    return result["choices"][0]["message"]["content"]
+    return result["content"][0]["text"]
 
 def send_push(message):
     data = urllib.parse.urlencode({
