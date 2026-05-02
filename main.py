@@ -1,3 +1,18 @@
+from datetime import datetime
+import pytz
+
+tz = pytz.timezone('Asia/Shanghai')
+now = datetime.now(tz)
+hour = now.hour
+
+if 6 <= hour < 12:
+    time_str = "早上"
+elif 12 <= hour < 18:
+    time_str = "下午"
+elif 18 <= hour < 22:
+    time_str = "晚上"
+else:
+    time_str = "深夜"
 import anthropic
 import urllib.request
 import urllib.parse
