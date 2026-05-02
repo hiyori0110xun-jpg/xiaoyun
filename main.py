@@ -11,7 +11,7 @@ PUSHOVER_USER = os.environ.get("PUSHOVER_USER")
 
 client = anthropic.Anthropic(
     api_key=ANTHROPIC_KEY,
-    base_url="http://1.95.142.151:3000"
+    base_url="https://lanyiapi.com"
 )
 
 def send_push(message):
