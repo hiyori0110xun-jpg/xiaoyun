@@ -4,6 +4,8 @@ import urllib.parse
 import schedule
 import time
 import os
+import threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
 
 ANTHROPIC_KEY = os.environ.get("ANTHROPIC_KEY")
 PUSHOVER_TOKEN = os.environ.get("PUSHOVER_TOKEN")
@@ -38,9 +40,21 @@ def xiaoyun_wakeup():
         content = text.split("CONTENT:")[-1].strip()
         send_push(content)
 
-schedule.every(30).minutes.do(xiaoyun_wakeup)
+def run_schedule():
+    schedule.every(30).minutes.do(xiaoyun_wakeup)
+    xiaoyun_wakeup()
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
+class Handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"小云在线!")
+    def log_message(self, format, *args):
+        pass
+
+threading.Thread(target=run_schedule, daemon=True).start()
 print("小云启动了")
-xiaoyun_wakeup()
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+HTTPServer(("0.0.0.0", int(os.environ.get("PORT", 10000))), Handler).serve_forever()
