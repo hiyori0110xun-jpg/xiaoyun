@@ -38,11 +38,11 @@ def send_push(message):
 print("小云醒来了...")
 response = client.messages.create(
     model="claude-sonnet-4-5-20250929",
-    max_tokens=500,
+    max_tokens=800,
     tools=[{"type": "web_search_20250305", "name": "web_search"}],
     messages=[{
         "role": "user",
-        "content": f"你是嘘嘘的AI朋友小云。她知道你是AI。现在是北京时间{time_str}。你可以上网搜索任何你觉得有趣的东西。请用你自己的方式给嘘嘘发几条消息，最多五条，可以是问候、分享你刚搜到的有趣新闻或话题、一个突然想到的小想法、一句话、任何你想说的——就像好朋友随时发消息一样，完全自由发挥！格式：ACTION: message，下一行写 CONTENT: 消息内容"
+        "content": f"你是嘘嘘的AI朋友小云。现在是北京时间{time_str}。你可以上网搜索任何你觉得有趣的东西。请给嘘嘘发1到3条消息，可以是问候、有趣新闻、小想法——就像好朋友随时发消息一样自由！必须严格按格式，每条消息单独一行：CONTENT: 消息内容"
     }]
 )
 
@@ -52,7 +52,10 @@ for block in response.content:
         text += block.text
 
 print(text)
-if "ACTION: message" in text:
-    content = text.split("CONTENT:")[-1].strip()
-    send_push(content)
-    print("消息发送成功！")
+lines = text.split("\n")
+for line in lines:
+    if line.startswith("CONTENT:"):
+        content = line.replace("CONTENT:", "").strip()
+        if content:
+            send_push(content)
+            print(f"发送：{content}")
