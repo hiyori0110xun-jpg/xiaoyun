@@ -9,7 +9,10 @@ ANTHROPIC_KEY = os.environ.get("ANTHROPIC_KEY")
 PUSHOVER_TOKEN = os.environ.get("PUSHOVER_TOKEN")
 PUSHOVER_USER = os.environ.get("PUSHOVER_USER")
 
-client = anthropic.Anthropic(api_key=ANTHROPIC_KEY)
+client = anthropic.Anthropic(
+    api_key=ANTHROPIC_KEY,
+    base_url="http://1.95.142.151:3000"
+)
 
 def send_push(message):
     data = urllib.parse.urlencode({
@@ -22,7 +25,7 @@ def send_push(message):
 def xiaoyun_wakeup():
     print("小云醒来了...")
     response = client.messages.create(
-        model="claude-sonnet-4-20250514",
+        model="claude-sonnet-4-5",
         max_tokens=200,
         messages=[{
             "role": "user",
