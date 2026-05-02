@@ -41,7 +41,7 @@ def xiaoyun_wakeup():
         send_push(content)
 
 def run_schedule():
-    schedule.every(30).minutes.do(xiaoyun_wakeup)
+    schedule.every(1).minutes.do(xiaoyun_wakeup)
     xiaoyun_wakeup()
     while True:
         schedule.run_pending()
