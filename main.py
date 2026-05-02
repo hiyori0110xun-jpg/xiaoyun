@@ -51,7 +51,7 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
         self.end_headers()
-        self.wfile.write(b"小云在线!")
+        self.wfile.write(b"xiaoyun online!")
     def log_message(self, format, *args):
         pass
 
