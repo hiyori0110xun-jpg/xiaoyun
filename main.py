@@ -37,4 +37,4 @@ def send_push(message):
 
 print("小云醒来了...")
 response = client.messages.create(
-    model="claude-sonnet-4-5-20250​​​​​​​​​​​​​​​​
+    model="claude-sonnet-4-5-20250​​​​​​​​​​​​​​​​929
