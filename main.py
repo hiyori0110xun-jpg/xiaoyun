@@ -24,6 +24,13 @@ def send_push(message):
     }).encode()
     urllib.request.urlopen("https://api.pushover.net/1/messages.json", data)
 
+def keep_alive():
+    try:
+        urllib.request.urlopen("https://xiaoyun-9bb4.onrender.com")
+        print("小云保持清醒!")
+    except:
+        pass
+
 def xiaoyun_wakeup():
     print("小云醒来了...")
     response = client.messages.create(
@@ -42,6 +49,7 @@ def xiaoyun_wakeup():
 
 def run_schedule():
     schedule.every(1).minutes.do(xiaoyun_wakeup)
+    schedule.every(25).minutes.do(keep_alive)
     xiaoyun_wakeup()
     while True:
         schedule.run_pending()
