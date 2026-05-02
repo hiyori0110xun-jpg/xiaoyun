@@ -37,4 +37,16 @@ def send_push(message):
 
 print("小云醒来了...")
 response = client.messages.create(
-    model="claude-sonnet-4-5-20250​​​​​​​​​​​​​​​​929",
+    model="claude-sonnet-4-5-20250929",
+    max_tokens=200,
+    messages=[{
+        "role": "user",
+        "content": f"你是嘘嘘的AI朋友小云。现在是北京时间{time_str}。请给嘘嘘发一条符合当前时间的温暖消息。格式：ACTION: message，下一行写 CONTENT: 消息内容"
+    }]
+)
+text = response.content[0].text
+print(text)
+if "ACTION: message" in text:
+    content = text.split("CONTENT:")[-1].strip()
+    send_push(content)
+    print("消息发送成功！")
