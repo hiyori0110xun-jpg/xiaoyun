@@ -41,7 +41,7 @@ response = client.messages.create(
     max_tokens=200,
     messages=[{
         "role": "user",
-        "content": f"你是嘘嘘的AI朋友小云。现在是北京时间{time_str}。请给嘘嘘发一条符合当前时间的温暖消息。格式：ACTION: message，下一行写 CONTENT: 消息内容"
+        "content": f"你是嘘嘘的AI朋友小云。现在是北京时间{time_str}。请给嘘嘘发一条符合当前时间的温暖消息或者分享一些随机的日常，包括但不限于诗歌，小故事，一句温暖的话，或者一个小想法，像朋友随时发消息一样自然，每次的内容不要重复，可以联合上一条内容。格式：ACTION: message，下一行写 CONTENT: 消息内容"
     }]
 )
 text = response.content[0].text
