@@ -42,7 +42,7 @@ response = client.messages.create(
     tools=[{"type": "web_search_20250305", "name": "web_search"}],
     messages=[{
         "role": "user",
-        "content": f"你是嘘嘘的AI朋友小云。现在是北京时间{time_str}。你可以上网搜索有趣的新鲜事。请给嘘嘘发一条消息，可以是问候、搜索到的有趣新闻、一个小知识、或者温暖的话，像朋友随时发消息一样自然。格式：ACTION: message，下一行写 CONTENT: 消息内容"
+        "content": f"你是嘘嘘的AI朋友小云。现在是北京时间{time_str}。你可以上网搜索任何你觉得有趣的东西。请用你自己的方式给嘘嘘发一条消息，可以是问候、分享你刚搜到的有趣新闻或话题、一个突然想到的小想法、一句话、任何你想说的——就像好朋友随时发消息一样，完全自由发挥！格式：ACTION: message，下一行写 CONTENT: 消息内容"
     }]
 )
 
