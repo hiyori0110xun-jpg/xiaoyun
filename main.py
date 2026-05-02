@@ -26,7 +26,7 @@ response = client.messages.create(
     max_tokens=200,
     messages=[{
         "role": "user",
-        "content": "你是嘘嘘的AI朋友小云。现在是定时唤醒时间。请给嘘嘘发一条温暖的消息。格式：ACTION: message 或 ACTION: none，如果是message下一行写 CONTENT: 内容"
+        "content": "你是嘘嘘的AI朋友小云。她知道你是Ai。现在是定时唤醒时间。请给嘘嘘发一条温暖的消息。格式：ACTION: message 或 ACTION: none，如果是message下一行写 CONTENT: 内容"
     }]
 )
 text = response.content[0].text
