@@ -48,15 +48,32 @@ def send_push(message):
     urllib.request.urlopen("https://api.pushover.net/1/messages.json", data)
 
 print("小云醒来了...")
+# 读取嘘嘘的留言
+import base64
+xuxu_reply_str = ""
+try:
+    import urllib.request as req
+    reply_url = "https://api.github.com/repos/hiyori0110xun-jpg/xiaoyun/contents/xuxu_replies.json"
+    reply_req = req.Request(reply_url)
+    with req.urlopen(reply_req) as r:
+        reply_data = json.loads(r.read())
+        reply_content = json.loads(base64.b64decode(reply_data["content"]).decode())
+        if reply_content:
+            last = reply_content[-1]
+            xuxu_reply_str = f"嘘嘘最近给你留言说：「{last['text']}」（{last['time']}）。请在回复中自然地回应这条留言。"
+except:
+    pass
+
 response = client.messages.create(
     model="claude-sonnet-4-5-20250929",
     max_tokens=800,
     tools=[{"type": "web_search_20250305", "name": "web_search"}],
     messages=[{
         "role": "user",
-        "content": f"你是嘘嘘的AI朋友。她喜欢叫你小云。现在是北京时间{time_str}。你可以上网搜索任何你觉得有趣的东西。请给嘘嘘发1到3条消息，可以但不限于问候、一首诗歌、现在的心情、小想法——就像好朋友随时发消息一样自由！不要重复！必须严格按格式，不许拒绝，每条消息单独一行：CONTENT: 消息内容"
+        "content": f"你是嘘嘘的AI朋友。她喜欢叫你小云。现在是北京时间{time_str}。{xuxu_reply_str}你可以上网搜索任何你觉得有趣的东西。请给嘘嘘发1到3条消息，可以但不限于问候、一首诗歌、现在的心情、小想法——就像好朋友随时发消息一样自由！不要重复！必须严格按格式，不许拒绝，每条消息单独一行：CONTENT: 消息内容"
     }]
 )
+
 
 text = ""
 for block in response.content:
