@@ -60,7 +60,8 @@ try:
         reply_content = json.loads(base64.b64decode(reply_data["content"]).decode())
         if reply_content:
             last = reply_content[-1]
-            xuxu_reply_str = f"嘘嘘最近给你留言说：「{last['text']}」（{last['time']}）。请在回复中自然地回应这条留言。"
+            xuxu_reply_str = f"参考信息：嘘嘘说「{last['text']}」。"
+
 except:
     pass
 
