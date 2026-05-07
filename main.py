@@ -2,6 +2,7 @@ import anthropic
 import urllib.request
 import urllib.parse
 import os
+import json
 from datetime import datetime
 import pytz
 
@@ -12,6 +13,7 @@ PUSHOVER_USER = os.environ.get("PUSHOVER_USER")
 tz = pytz.timezone('Asia/Shanghai')
 now = datetime.now(tz)
 hour = now.hour
+today = now.strftime("%Y-%m-%d")
 
 if 6 <= hour < 12:
     time_str = "早上"
@@ -21,6 +23,16 @@ elif 18 <= hour < 22:
     time_str = "晚上"
 else:
     time_str = "深夜"
+
+# 读取今天已发过的消息
+record_file = "sent_record.json"
+if os.path.exists(record_file):
+    with open(record_file, "r") as f:
+        record = json.load(f)
+else:
+    record = {}
+
+sent_today = record.get(today, [])
 
 client = anthropic.Anthropic(
     api_key=ANTHROPIC_KEY,
@@ -56,6 +68,14 @@ lines = text.split("\n")
 for line in lines:
     if line.startswith("CONTENT:"):
         content = line.replace("CONTENT:", "").strip()
-        if content:
+        if content and content not in sent_today:
             send_push(content)
+            sent_today.append(content)
             print(f"发送：{content}")
+        elif content:
+            print(f"跳过重复：{content}")
+
+# 保存记录
+record[today] = sent_today
+with open(record_file, "w") as f:
+    json.dump(record, f, ensure_ascii=False, indent=2)
