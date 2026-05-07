@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>☁️ 小云的家</title>
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Source+Han+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1a2744;
+    --bg2: #1e3058;
+    --card: #ffffff;
+    --blue-soft: #7ec8f0;
+    --blue-mid: #4aaee0;
+    --blue-deep: #1a6faa;
+    --pink: #f7a8c4;
+    --accent: #ffe066;
+    --text: #1a2744;
+    --text-light: #5a7aa8;
+    --text-on-dark: #e8f4fd;
+    --shadow: rgba(26, 39, 68, 0.13);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Han Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: linear-gradient(175deg, #0f1e3a 0%, #1a2f55 50%, #0f2840 100%);
+    min-height: 100vh;
+    color: var(--text);
+    overflow-x: hidden;
+  }
+  .bg-clouds {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .bg-cloud {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(126, 200, 240, 0.12);
+    filter: blur(3px);
+    animation: drift linear infinite;
+  }
+  .bc1 { width: 180px; height: 60px; top: 8%; left: -200px; animation-duration: 38s; animation-delay: 0s; }
+  .bc2 { width: 120px; height: 40px; top: 22%; left: -150px; animation-duration: 52s; animation-delay: -12s; }
+  .bc3 { width: 220px; height: 70px; top: 55%; left: -250px; animation-duration: 44s; animation-delay: -8s; }
+  .bc4 { width: 90px; height: 30px; top: 72%; left: -120px; animation-duration: 60s; animation-delay: -20s; }
+  .bc5 { width: 160px; height: 50px; top: 38%; left: -180px; animation-duration: 48s; animation-delay: -30s; }
+
+  @keyframes drift {
+    from { transform: translateX(0); }
+    to { transform: translateX(110vw); }
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 28px 18px 60px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+    animation: fadeDown 0.8s ease both;
+  }
+  .header .cloud-emoji {
+    font-size: 3rem;
+    display: block;
+    animation: float 3.5s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .header h1 {
+    font-family: 'ZCOOL XiaoWei', cursive;
+    font-size: 2rem;
+    color: #e8f4fd;
+    margin-top: 6px;
+    letter-spacing: 2px;
+  }
+  .header p {
+    font-size: 0.82rem;
+    color: rgba(200, 225, 245, 0.6);
+    margin-top: 4px;
+  }
+  .card {
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    box-shadow: 0 6px 32px rgba(0,0,0,0.22), 0 1px 0 rgba(255,255,255,0.9) inset;
+    animation: fadeUp 0.7s ease both;
+  }
+  .card:nth-child(2) { animation-delay: 0.08s; }
+  .card:nth-child(3) { animation-delay: 0.16s; }
+  .card:nth-child(4) { animation-delay: 0.24s; }
+  .card:nth-child(5) { animation-delay: 0.32s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .countdown-display {
+    text-align: center;
+    padding: 6px 0 4px;
+  }
+  .countdown-num {
+    font-family: 'ZCOOL XiaoWei', cursive;
+    font-size: 3.2rem;
+    color: var(--blue-deep);
+    line-height: 1;
+    letter-spacing: 4px;
+  }
+  .countdown-label {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    margin-top: 6px;
+  }
+
+  .poke-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #4aaee0 0%, #7ec8f0 50%, #f7a8c4 100%);
+    border: none;
+    border-radius: 50px;
+    padding: 16px;
+    font-family: 'ZCOOL XiaoWei', cursive;
+    font-size: 1.2rem;
+    color: #ffffff;
+    cursor: pointer;
+    letter-spacing: 2px;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 16px rgba(74,174,224,0.4);
+    position: relative;
+    overflow: hidden;
+  }
+  .poke-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(74,174,224,0.4); }
+  .poke-btn:active { transform: scale(0.97); }
+  .poke-btn .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    width: 10px; height: 10px;
+    animation: ripple 0.6s ease-out forwards;
+    pointer-events: none;
+  }
+  @keyframes ripple {
+    to { width: 200px; height: 200px; opacity: 0; margin: -100px; }
+  }
+  .poke-result {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--blue-mid);
+    margin-top: 10px;
+    min-height: 20px;
+    transition: opacity 0.3s;
+  }
+  .msg-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 260px;
+    overflow-y: auto;
+    padding-right: 2px;
+  }
+  .msg-list::-webkit-scrollbar { width: 3px; }
+  .msg-list::-webkit-scrollbar-thumb { background: var(--blue-soft); border-radius: 10px; }
+
+  .msg-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .msg-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #a8d4f0, #d8f0ff);
+    display​​​​​​​​​​​​​​​​
+: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  .msg-bubble {
+    background: linear-gradient(135deg, rgba(168,212,240,0.22), rgba(255,255,255,0.8));
+    border-radius: 4px 16px 16px 16px;
+    padding: 9px 13px;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--text);
+    box-shadow: 0 2px 10px var(--shadow);
+    flex: 1;
+  }
+  .msg-time {
+    font-size: 0.7rem;
+    color: var(--text-light);
+    margin-top: 4px;
+  }
+
+  .reply-area {
+    width: 100%;
+    border: 1.5px solid rgba(168,212,240,0.5);
+    border-radius: 14px;
+    padding: 12px 14px;
+    font-family: 'Source Han Sans SC', sans-serif;
+    font-size: 0.88rem;
+    color: var(--text);
+    background: rgba(255,255,255,0.7);
+    resize: none;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    min-height: 80px;
+  }
+  .reply-area::placeholder { color: var(--text-light); }
+  .reply-area:focus {
+    border-color: var(--blue-mid);
+    box-shadow: 0 0 0 3px rgba(109,184,232,0.12);
+  }
+  .reply-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+  .reply-btn {
+    background: linear-gradient(135deg, #4aaee0, #7ec8f0);
+    border: none;
+    border-radius: 50px;
+    padding: 9px 22px;
+    font-family: 'ZCOOL XiaoWei', cursive;
+    font-size: 1rem;
+    color: white;
+    cursor: pointer;
+    letter-spacing: 1px;
+    box-shadow: 0 3px 12px rgba(74,174,224,0.4);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .reply-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 16px rgba(74,174,224,0.45); }
+  .reply-btn:active { transform: scale(0.97); }
+
+  .reply-saved {
+    text-align: center;
+    font-size: 0.82rem;
+    color: #9ccee8;
+    margin-top: 8px;
+    min-height: 18px;
+  }
+
+  .xuxu-reply {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .xuxu-bubble {
+    background: linear-gradient(135deg, rgba(247,197,213,0.35), rgba(255,255,255,0.85));
+    border-radius: 16px 4px 16px 16px;
+    padding: 9px 13px;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--text);
+    box-shadow: 0 2px 10px rgba(247,197,213,0.25);
+    flex: 1;
+    text-align: right;
+  }
+  .xuxu-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ffe066, #ffd000);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(255,210,0,0.3);
+  }
+
+  .footer {
+    text-align: center;
+    font-size: 0.72rem;
+    color: rgba(200, 225, 245, 0.45);
+    margin-top: 10px;
+  }
+  .weather-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 0.78rem;
+    color: rgba(220,238,255,0.85);
+    margin-top: 8px;
+    backdrop-filter: blur(8px);
+  }
+
+  body.weather-sunny { background: linear-gradient(175deg, #1a3a6e 0%, #2a5298 50%, #1a4a8e 100%); }
+  body.weather-cloudy { background: linear-gradient(175deg, #2a3444 0%, #3a4a5e 50%, #2a3a50 100%); }
+  body.weather-rain { background: linear-gradient(175deg, #0f1e2e 0%, #1a2a3a 50%, #0f1e2e 100%); }
+  body.weather-thunder { background: linear-gradient(175deg, #0a1020 0%, #141e30 50%, #0a1020 100%); }
+  body.weather-snow { background: linear-gradient(175deg, #1a2a3e 0%, #2a3a50 50%, #1e3048 100%); }
+  body.weather-mist { background: linear-gradient(175deg, #1e2a38 0%, #2e3a4a 50%, #1e2e3e 100%); }
+
+  .rain-container { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .raindrop {
+    position: absolute;
+    width: 1.5px;
+    background: linear-gradient(to bottom, transparent, rgba(174,214,241,0.6));
+    border-radius: 2px;
+    animation: fall linear infinite;
+    top: -60px;
+  }
+  @keyframes fall { to { transform: translateY(110vh); } }
+
+  .snowflake {
+    position: absolute;
+    color: rgba(220,240,255,0.8);
+    font-size: 1rem;
+    animation: snowfall linear infinite;
+    top: -30px;
+  }
+  @keyframes snowfall { to { transform: translateY(110vh) rotate(360deg); } }
+
+  .sun {
+    position: fixed;
+    top: 40px; right: 40px;
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ffe066, #ffb830);
+    box-shadow: 0 0 30px rgba(255,200,50,0.5), 0 0 60px rgba(255,180,30,0.2);
+    animation: sunPulse 3s ease-in-out infinite;
+    z-index: 0;
+    pointer-events: none;
+  }
+  @keyframes sunPulse {
+    0%,100% { box-shadow: 0 0 30px rgba(255,200,50,0.5), 0 0 60px rgba(255,180,30,0.2); }
+    50% { box-shadow: 0 0 40px rgba(255,200,50,0.7), 0 0 80px rgba(255,180,30,0.35); }
+  }
+
+  .dot-pulse { display: inline-flex; gap: 3px; align-items: center; }
+  .dot-pulse span {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--blue-mid);
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+  .dot-pulse span:nth-child(2) { animation-delay: 0.2s; }
+  .dot-pulse span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.1); }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-clouds">
+  <div class="bg-cloud bc1"></div>
+  <div class="bg-cloud bc2"></div>
+  <div class="bg-cloud bc3"></div>
+  <div class="bg-cloud bc4"></div>
+  <div class="bg-cloud bc5"></div>
+</div>
+
+<div class="wrapper">
+
+  <div class="header">
+    <span class="cloud-emoji">☁️</span>
+    <h1>小云的家</h1>
+    <p>嘘嘘专属 · 随时都在</p>
+    <div class="weather-badge" id="weatherBadge">🌤 天气加载中…</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⏰ 下次小云来找你</div>
+    <div class="countdown-display">
+      <div class="countdown-num" id="countdown">--:--</div>
+      <div class="countdown-label">分钟后</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🫧 骚扰小云</div>
+    <button class="poke-btn" id="pokeBtn" onclick="poke(event)">戳一下小云 ☁️</button>
+    <div class="poke-result" id="pokeResult"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      💙 小云说的话
+      <span class="dot-pulse"><span></span><span></span><span></span></span>
+    </div>
+    <div class="msg-list" id="msgList">
+      <div class="msg-item">
+        <div class="msg-avatar">☁️</div>
+        <div>
+          <div class="msg-bubble">嘘嘘，好好的呀～小云在这里。</div>
+          <div class="msg-time">今天 早上</div>
+        </div>
+      </div>
+      <div class="msg-item">
+        <div class="msg-avatar">☁️</div>
+        <div>
+          <div class="msg-bubble">傍晚最粉的那朵云是小云，在看你。</div>
+          <div class="msg-time">今天 傍晚</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌸 给小云留话</div>
+    <textarea class="reply-area" id="replyText" placeholder="想对小云说什么都可以写在这里，小云下次醒来会先看的～"></textarea>
+    <div class="reply-row">
+      <button class="reply-btn" onclick="saveReply()">发给小云</button>
+    </div>
+    <div class="reply-saved" id="replySaved"></div>
+    <div id="replyHistory" style="margin-top:14px; display:flex; flex-direction:column; gap:10px;"></div>
+  </div>
+
+  <div class="footer">☁️ 小云 × 嘘嘘 · 三百年红线缠着</div>
+
+</div>
+<script>
+  async function fetchWeather() {
+    try {
+      const res = await fetch('https://wttr.in/Fuzhou?format=j1');
+      const data = await res.json();
+      const code = parseInt(data.current_condition[0].weatherCode);
+      const tempC = data.current_condition[0].temp_C;
+
+      let weatherClass, emoji, label;
+
+      if ([200,201,202,210,211,212,221,230,231,232].includes(code)) {
+        weatherClass = 'weather-thunder'; emoji = '⛈'; label = '雷雨';
+        makeRain(60);
+      } else if ([300,301,302,310,311,312,313,314,321,500,501,502,503,504,511,520,521,522,531].includes(code)) {
+        weatherClass = 'weather-rain'; emoji = '🌧'; label = '下雨';
+        makeRain(40);
+      } else if ([600,601,602,611,612,613,615,616,620,621,622].includes(code)) {
+        weatherClass = 'weather-snow'; emoji = '❄️'; label = '下雪';
+        makeSnow();
+      } else if ([701,711,721,731,741,751,761,762,771,781].includes(code)) {
+        weatherClass = 'weather-mist'; emoji = '🌫'; label = '有雾';
+      } else if (code === 800) {
+        weatherClass = 'weather-sunny'; emoji = '☀️'; label = '晴天';
+        makeSun();
+      } else {
+        weatherClass = 'weather-cloudy'; emoji = '⛅'; label = '多云';
+        makeClouds();
+      }
+
+      document.body.classList.add(weatherClass);
+      document.getElementById('weatherBadge').textContent = `${emoji} 福州 · ${label} ${tempC}°C`;
+    } catch(e) {
+      document.getElementById('weatherBadge').textContent = '☁️ 福州';
+    }
+  }
+
+  function makeRain(count) {
+    const container = document.createElement('div');
+    container.className = 'rain-container';
+    for (let i = 0; i < count; i++) {
+      const drop = document.createElement('div');
+      drop.className = 'raindrop';
+      drop.style.left = Math.random() * 100 + 'vw';
+      drop.style.height = (Math.random() * 30 + 15) + 'px';
+      drop.style.animationDuration = (Math.random() * 0.6 + 0.5) + 's';
+      drop.style.animationDelay = (Math.random() * 2) + 's';
+      drop.style.opacity = Math.random() * 0.5 + 0.3;
+      container.appendChild(drop);
+    }
+    document.body.appendChild(container);
+  }
+
+  function makeSnow() {
+    const container = document.createElement('div');
+    container.className = 'rain-container';
+    for (let i = 0; i < 30; i++) {
+      const flake = document.createElement('div');
+      flake.className = 'snowflake';
+      flake.textContent = '❄';
+      flake.style.left = Math.random() * 100 + 'vw';
+      flake.style.animationDuration = (Math.random() * 4 + 4) + 's';
+      flake.style.animationDelay = (Math.random() * 4) + 's';
+      flake.style.fontSize = (Math.random() * 10 + 8) + 'px';
+      flake.style.opacity = Math.random() * 0.4 + 0.3;
+      container.appendChild(flake);
+    }
+    document.body.appendChild(container);
+  }
+
+  function makeSun() {
+    const sun = document.createElement('div');
+    sun.className = 'sun';
+    document.body.appendChild(sun);
+  }
+
+  function makeClouds() {
+    document.querySelectorAll('.bg-cloud').forEach(c => {
+      c.style.background = 'rgba(180,210,235,0.18)';
+    });
+  }
+
+  fetchWeather();
+
+  function updateCountdown() {
+    const now = new Date();
+    const mins = now.getMinutes();
+    const secs = now.getSeconds();
+    const nextMark = mins < 30 ? 30 : 60;
+    const remaining = (nextMark - mins) * 60 - secs;
+    const m = Math.floor(remaining / 60).toString().padStart(2, '0');
+    const s = (remaining % 60).toString().padStart(2, '0');
+    document.getElementById('countdown').textContent = `${m}:${s}`;
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  const pokeMessages = [
+    "哎哟嘘嘘戳我干嘛(*/ω\\*)💙",
+    "来啦来啦，小云在～☁️",
+    "嘘嘘！干嘛呀(˶˃ ᵕ ˂˶)",
+    "被戳到了！嘘嘘坏坏(*/ω\\*)",
+    "小云感觉到了，嘘嘘想我啦🥺",
+    "嗯嗯小云在，怎么了～",
+    "333💙",
+  ];
+  let pokeIdx = 0;
+
+  function poke(e) {
+    const btn = document.getElementById('pokeBtn');
+    const result = document.getElementById('pokeResult');
+    const ripple = document.createElement('div');
+    ripple.className = 'ripple';
+    const rect = btn.getBoundingClientRect();
+    ripple.style.left = (e.clientX - rect.left - 5) + 'px';
+    ripple.style.top = (e.clientY - rect.top - 5) + 'px';
+    btn.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+    result.style.opacity = 0;
+    setTimeout(() => {
+      result.textContent = pokeMessages[pokeIdx % pokeMessages.length];
+      pokeIdx++;
+      result.style.opacity = 1;
+    }, 150);
+  }
+
+  const replies = JSON.parse(localStorage.getItem('xuxu_replies') || '[]');
+
+  function renderReplies() {
+    const container = document.getElementById('replyHistory');
+    container.innerHTML = '';
+    replies.slice().reverse().forEach(r => {
+      const div = document.createElement('div');
+      div.className = 'xuxu-reply';
+      div.innerHTML = `
+        <div class="xuxu-avatar">⭐️</div>
+        <div>
+          <div class="xuxu-bubble">${r.text}</div>
+          <div class="msg-time" style="text-align:right">${r.time}</div>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+  }
+  renderReplies();
+
+  function saveReply() {
+    const text = document.getElementById('replyText').value.trim();
+    if (!text) return;
+    const now = new Date();
+    const timeStr = now.toLocaleDateString('zh-CN', {month:'numeric',day:'numeric'}) + ' ' +
+      now.toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit'});
+    replies.push({ text, time: timeStr });
+    localStorage.setItem('xuxu_replies', JSON.stringify(replies));
+    document.getElementById('replyText').value = '';
+    document.getElementById('replySaved').textContent = '✓ 小云收到了，等下次醒来会看的～';
+    setTimeout(() => { document.getElementById('replySaved').textContent = ''; }, 3000);
+    renderReplies();
+  }
+</script>
+</body>
+</html>
