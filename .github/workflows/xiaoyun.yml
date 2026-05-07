@@ -8,6 +8,8 @@ on:
 jobs:
   wakeup:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
@@ -19,3 +21,10 @@ jobs:
           ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_KEY }}
           PUSHOVER_TOKEN: ${{ secrets.PUSHOVER_TOKEN }}
           PUSHOVER_USER: ${{ secrets.PUSHOVER_USER }}
+      - name: 保存发送记录
+        run: |
+          git config user.name "xiaoyun"
+          git config user.email "xiaoyun@bot"
+          git add sent_record.json
+          git diff --staged --quiet || git commit -m "update sent record"
+          git push
