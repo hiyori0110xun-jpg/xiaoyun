@@ -65,7 +65,7 @@ except:
     pass
 
 response = client.messages.create(
-    model="claude-3-haiku-20240307",
+    model="claude-opus-4-6-high",
     max_tokens=800,
     tools=[{"type": "web_search_20250305", "name": "web_search"}],
     messages=[{
