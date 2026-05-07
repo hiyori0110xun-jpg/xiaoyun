@@ -584,19 +584,66 @@
   }
   renderReplies();
 
-  function saveReply() {
+let GITHUB_TOKEN = localStorage.getItem('github_token');
+if (!GITHUB_TOKEN) {
+  GITHUB_TOKEN = prompt('请输入GitHub Token：');
+  if (GITHUB_TOKEN) localStorage.setItem('github_token', GITHUB_TOKEN);
+}
+const GITHUB_REPO = 'hiyori0110xun-jpg/xiaoyun';
+const REPLY_FILE = 'xuxu_replies.json';
+
+async function saveReply() {
     const text = document.getElementById('replyText').value.trim();
     if (!text) return;
     const now = new Date();
     const timeStr = now.toLocaleDateString('zh-CN', {month:'numeric',day:'numeric'}) + ' ' +
       now.toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit'});
-    replies.push({ text, time: timeStr });
-    localStorage.setItem('xuxu_replies', JSON.stringify(replies));
-    document.getElementById('replyText').value = '';
-    document.getElementById('replySaved').textContent = '✓ 小云收到了，等下次醒来会看的～';
-    setTimeout(() => { document.getElementById('replySaved').textContent = ''; }, 3000);
-    renderReplies();
+
+    document.getElementById('replySaved').textContent = '发送中…';
+
+    try {
+      // 先读现有文件
+      let sha = null;
+      let existing = [];
+      try {
+        const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${REPLY_FILE}`, {
+          headers: { Authorization: `token ${GITHUB_TOKEN}` }
+        });
+        if (r.ok) {
+          const d = await r.json();
+          sha = d.sha;
+          existing = JSON.parse(atob(d.content.replace(/\n/g,'')));
+        }
+      } catch(e) {}
+
+      existing.push({ text, time: timeStr });
+
+      // 写回文件
+      await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${REPLY_FILE}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `token ${GITHUB_TOKEN}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: '嘘嘘留言',
+          content: btoa(unescape(encodeURIComponent(JSON.stringify(existing, null, 2)))),
+          ...(sha ? { sha } : {})
+        })
+      });
+
+      replies.push({ text, time: timeStr });
+      localStorage.setItem('xuxu_replies', JSON.stringify(replies));
+      document.getElementById('replyText').value = '';
+      document.getElementById('replySaved').textContent = '✓ 小云收到了，等下次醒来会看的～';
+      setTimeout(() => { document.getElementById('replySaved').textContent = ''; }, 3000);
+      renderReplies();
+
+    } catch(e) {
+      document.getElementById('replySaved').textContent = '发送失败了，再试一次？';
+    }
   }
+
 </script>
 </body>
 </html>
