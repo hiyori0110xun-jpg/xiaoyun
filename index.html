@@ -592,7 +592,10 @@ async function loadMessageHistory() {
       });
       if (r.ok) {
         const d = await r.json();
-       const history = JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\n/g,'')))));
+       const bytes = atob(d.content.replace(/\n/g,''));
+       const uint8 = new Uint8Array(bytes.length);
+       for(let i=0;i<bytes.length;i++) uint8[i]=bytes.charCodeAt(i);
+       const history = JSON.parse(new TextDecoder('utf-8').decode(uint8));
 
         const msgList = document.getElementById('msgList');
         msgList.innerHTML = '';
