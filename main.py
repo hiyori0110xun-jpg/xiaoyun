@@ -97,3 +97,24 @@ for line in lines:
 record[today] = sent_today
 with open(record_file, "w") as f:
     json.dump(record, f, ensure_ascii=False, indent=2)
+
+# 保存完整消息历史
+history_file = "message_history.json"
+if os.path.exists(history_file):
+    with open(history_file, "r") as f:
+        history = json.load(f)
+else:
+    history = []
+
+for content in sent_today:
+    if not any(m["text"] == content for m in history):
+        history.append({
+            "text": content,
+            "time": now.strftime("%m/%d %H:%M"),
+            "timeStr": time_str
+        })
+
+# 只保留最近50条
+history = history[-50:]
+with open(history_file, "w") as f:
+    json.dump(history, f, ensure_ascii=False, indent=2)
