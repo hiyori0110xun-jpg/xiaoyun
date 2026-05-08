@@ -592,7 +592,8 @@ async function loadMessageHistory() {
       });
       if (r.ok) {
         const d = await r.json();
-        const history = JSON.parse(atob(d.content.replace(/\n/g,'')));
+       const history = JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\n/g,'')))));
+
         const msgList = document.getElementById('msgList');
         msgList.innerHTML = '';
         history.slice().reverse().forEach(msg => {
