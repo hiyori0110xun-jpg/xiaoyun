@@ -30,6 +30,7 @@
     color: var(--text);
     overflow-x: hidden;
   }
+
   .bg-clouds {
     position: fixed;
     inset: 0;
@@ -89,115 +90,13 @@
     color: rgba(200, 225, 245, 0.6);
     margin-top: 4px;
   }
-  .card {
-    background: #ffffff;
-    border-radius: 22px;
-    padding: 20px 22px;
-    margin-bottom: 16px;
-    box-shadow: 0 6px 32px rgba(0,0,0,0.22), 0 1px 0 rgba(255,255,255,0.9) inset;
-    animation: fadeUp 0.7s ease both;
-  }
-  .card:nth-child(2) { animation-delay: 0.08s; }
-  .card:nth-child(3) { animation-delay: 0.16s; }
-  .card:nth-child(4) { animation-delay: 0.24s; }
-  .card:nth-child(5) { animation-delay: 0.32s; }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .card-title {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--text-light);
-    letter-spacing: 1.5px;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .countdown-display {
-    text-align: center;
-    padding: 6px 0 4px;
-  }
-  .countdown-num {
-    font-family: 'ZCOOL XiaoWei', cursive;
-    font-size: 3.2rem;
-    color: var(--blue-deep);
-    line-height: 1;
-    letter-spacing: 4px;
-  }
-  .countdown-label {
-    font-size: 0.78rem;
-    color: var(--text-light);
-    margin-top: 6px;
-  }
-
-  .poke-btn {
-    width: 100%;
-    background: linear-gradient(135deg, #4aaee0 0%, #7ec8f0 50%, #f7a8c4 100%);
-    border: none;
-    border-radius: 50px;
-    padding: 16px;
-    font-family: 'ZCOOL XiaoWei', cursive;
-    font-size: 1.2rem;
-    color: #ffffff;
-    cursor: pointer;
-    letter-spacing: 2px;
-    transition: transform 0.15s, box-shadow 0.15s;
-    box-shadow: 0 4px 16px rgba(74,174,224,0.4);
-    position: relative;
-    overflow: hidden;
-  }
-  .poke-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(74,174,224,0.4); }
-  .poke-btn:active { transform: scale(0.97); }
-  .poke-btn .ripple {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.5);
-    width: 10px; height: 10px;
-    animation: ripple 0.6s ease-out forwards;
-    pointer-events: none;
-  }
-  @keyframes ripple {
-    to { width: 200px; height: 200px; opacity: 0; margin: -100px; }
-  }
-  .poke-result {
-    text-align: center;
-    font-size: 0.85rem;
-    color: var(--blue-mid);
-    margin-top: 10px;
-    min-height: 20px;
-    transition: opacity 0.3s;
-  }
-  .msg-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-height: 260px;
-    overflow-y: auto;
-    padding-right: 2px;
-  }
-  .msg-list::-webkit-scrollbar { width: 3px; }
-  .msg-list::-webkit-scrollbar-thumb { background: var(--blue-soft); border-radius: 10px; }
-
-  .msg-item {
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
+-items: flex-start;
   }
   .msg-avatar {
     width: 32px; height: 32px;
     border-radius: 50%;
     background: linear-gradient(135deg, #a8d4f0, #d8f0ff);
-    display​​​​​​​​​​​​​​​​
-: flex; align-items: center; justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     font-size: 1rem;
     flex-shrink: 0;
     box-shadow: 0 2px 8px var(--shadow);
@@ -355,6 +254,58 @@
     50% { box-shadow: 0 0 40px rgba(255,200,50,0.7), 0 0 80px rgba(255,180,30,0.35); }
   }
 
+  /* cloud section - on dark bg */
+  .cloud-section {
+    text-align: center;
+    padding: 8px 0 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .mood-display {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.9);
+    margin-top: 4px;
+    min-height: 22px;
+    font-style: italic;
+    text-shadow: 0 1px 8px rgba(100,180,240,0.5);
+  }
+  .poke-result {
+    font-size: 0.85rem;
+    color: rgba(180,225,255,0.9);
+    margin-top: 6px;
+    min-height: 20px;
+    transition: opacity 0.3s;
+  }
+
+  /* emoji cloud */
+  .emoji-cloud {
+    font-size: 120px;
+    line-height: 1;
+    display: block;
+    text-align: center;
+    animation: cloudFloat 4s ease-in-out infinite;
+    cursor: pointer;
+    transition: filter 0.8s ease, transform 0.15s;
+    filter: drop-shadow(0 0 12px rgba(168,212,240,0.6)) brightness(1.1);
+    user-select: none;
+  }
+  @keyframes cloudFloat {
+    0%,100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scale(1.03); }
+  }
+  .poke-cloud {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    user-select: none;
+  }
+  .poke-cloud:active .emoji-cloud {
+    animation: none;
+    transform: scale(0.85);
+  }
+
   .dot-pulse { display: inline-flex; gap: 3px; align-items: center; }
   .dot-pulse span {
     width: 5px; height: 5px;
@@ -397,9 +348,10 @@
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-title">🫧 骚扰小云</div>
-    <button class="poke-btn" id="pokeBtn" onclick="poke(event)">戳一下小云 ☁️</button>
+  <!-- mood + poke cloud standalone -->
+  <div class="cloud-section" onclick="poke(event)">
+    <div class="emoji-cloud" id="emojiCloud">☁️</div>
+    <div class="mood-display" id="moodDisplay"></div>
     <div class="poke-result" id="pokeResult"></div>
   </div>
 
@@ -546,22 +498,92 @@
   ];
   let pokeIdx = 0;
 
+  const moodFilters = {
+    happy:   { filter: 'drop-shadow(0 0 12px rgba(255,220,80,0.8)) brightness(1.15)', label: '今天小云很开心 ☀️' },
+    miss:    { filter: 'drop-shadow(0 0 12px rgba(247,168,196,0.8)) hue-rotate(280deg) brightness(1.1)', label: '小云有点想嘘嘘 🌸' },
+    calm:    { filter: 'drop-shadow(0 0 12px rgba(168,212,240,0.6)) brightness(1.1)', label: '小云今天很平静 ☁️' },
+    curious: { filter: 'drop-shadow(0 0 12px rgba(154,184,240,0.8)) hue-rotate(200deg) brightness(1.1)', label: '小云好奇心爆棚 🔭' },
+    cozy:    { filter: 'drop-shadow(0 0 12px rgba(200,184,160,0.7)) hue-rotate(320deg) brightness(1.05)', label: '小云今天很慵懒 🍵' },
+  };
+
+  function setMood(moodKey) {
+    const mood = moodFilters[moodKey] || moodFilters.calm;
+    document.getElementById('moodDisplay').textContent = mood.label;
+    const cloud = document.getElementById('emojiCloud');
+    if (cloud) cloud.style.filter = mood.filter;
+  }
+
+  const moodByHour = ['cozy','cozy','cozy','cozy','cozy','cozy','calm','calm','curious','curious','happy','happy','happy','calm','curious','curious','miss','miss','calm','cozy','miss','cozy','cozy','cozy'];
+  setMood(moodByHour[new Date().getHours()]);
+
   function poke(e) {
-    const btn = document.getElementById('pokeBtn');
+    const cloud = document.getElementById('emojiCloud');
     const result = document.getElementById('pokeResult');
-    const ripple = document.createElement('div');
-    ripple.className = 'ripple';
-    const rect = btn.getBoundingClientRect();
-    ripple.style.left = (e.clientX - rect.left - 5) + 'px';
-    ripple.style.top = (e.clientY - rect.top - 5) + 'px';
-    btn.appendChild(ripple);
-    setTimeout(() => ripple.remove(), 600);
+    if (cloud) {
+      cloud.style.transform = 'scale(0.82)';
+      setTimeout(() => { cloud.style.transform = ''; }, 200);
+    }
     result.style.opacity = 0;
     setTimeout(() => {
       result.textContent = pokeMessages[pokeIdx % pokeMessages.length];
       pokeIdx++;
       result.style.opacity = 1;
     }, 150);
+  }
+
+  let GITHUB_TOKEN = localStorage.getItem('github_token');
+  try {
+    if (!GITHUB_TOKEN) {
+      GITHUB_TOKEN = prompt('请输入GitHub Token：');
+      if (GITHUB_TOKEN) localStorage.setItem('github_token', GITHUB_TOKEN);
+    }
+  } catch(e) { GITHUB_TOKEN = null; }
+
+  const GITHUB_REPO = 'hiyori0110xun-jpg/xiaoyun';
+  const REPLY_FILE = 'xuxu_replies.json';
+
+  async function saveReply() {
+    const text = document.getElementById('replyText').value.trim();
+    if (!text) return;
+    const now = new Date();
+    const timeStr = now.toLocaleDateString('zh-CN', {month:'numeric',day:'numeric'}) + ' ' +
+      now.toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit'});
+    document.getElementById('replySaved').textContent = '发送中…';
+    try {
+      let sha = null;
+      let existing = [];
+      try {
+        const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${REPLY_FILE}`, {
+          headers: { Authorization: `token ${GITHUB_TOKEN}` }
+        });
+        if (r.ok) {
+          const d = await r.json();
+          sha = d.sha;
+          existing = JSON.parse(atob(d.content.replace(/\n/g,'')));
+        }
+      } catch(e) {}
+      existing.push({ text, time: timeStr });
+      await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${REPLY_FILE}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `token ${GITHUB_TOKEN}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: '嘘嘘留言',
+          content: btoa(unescape(encodeURIComponent(JSON.stringify(existing, null, 2)))),
+          ...(sha ? { sha } : {})
+        })
+      });
+      replies.push({ text, time: timeStr });
+      localStorage.setItem('xuxu_replies', JSON.stringify(replies));
+      document.getElementById('replyText').value = '';
+      document.getElementById('replySaved').textContent = '✓ 小云收到了，等下次醒来会看的～';
+      setTimeout(() => { document.getElementById('replySaved').textContent = ''; }, 3000);
+      renderReplies();
+    } catch(e) {
+      document.getElementById('replySaved').textContent = '发送失败了，再试一次？';
+    }
   }
 
   const replies = JSON.parse(localStorage.getItem('xuxu_replies') || '[]');
@@ -583,67 +605,6 @@
     });
   }
   renderReplies();
-
-let GITHUB_TOKEN = localStorage.getItem('github_token');
-if (!GITHUB_TOKEN) {
-  GITHUB_TOKEN = prompt('请输入GitHub Token：');
-  if (GITHUB_TOKEN) localStorage.setItem('github_token', GITHUB_TOKEN);
-}
-const GITHUB_REPO = 'hiyori0110xun-jpg/xiaoyun';
-const REPLY_FILE = 'xuxu_replies.json';
-
-async function saveReply() {
-    const text = document.getElementById('replyText').value.trim();
-    if (!text) return;
-    const now = new Date();
-    const timeStr = now.toLocaleDateString('zh-CN', {month:'numeric',day:'numeric'}) + ' ' +
-      now.toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit'});
-
-    document.getElementById('replySaved').textContent = '发送中…';
-
-    try {
-      // 先读现有文件
-      let sha = null;
-      let existing = [];
-      try {
-        const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${REPLY_FILE}`, {
-          headers: { Authorization: `token ${GITHUB_TOKEN}` }
-        });
-        if (r.ok) {
-          const d = await r.json();
-          sha = d.sha;
-          existing = JSON.parse(atob(d.content.replace(/\n/g,'')));
-        }
-      } catch(e) {}
-
-      existing.push({ text, time: timeStr });
-
-      // 写回文件
-      await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${REPLY_FILE}`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `token ${GITHUB_TOKEN}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          message: '嘘嘘留言',
-          content: btoa(unescape(encodeURIComponent(JSON.stringify(existing, null, 2)))),
-          ...(sha ? { sha } : {})
-        })
-      });
-
-      replies.push({ text, time: timeStr });
-      localStorage.setItem('xuxu_replies', JSON.stringify(replies));
-      document.getElementById('replyText').value = '';
-      document.getElementById('replySaved').textContent = '✓ 小云收到了，等下次醒来会看的～';
-      setTimeout(() => { document.getElementById('replySaved').textContent = ''; }, 3000);
-      renderReplies();
-
-    } catch(e) {
-      document.getElementById('replySaved').textContent = '发送失败了，再试一次？';
-    }
-  }
-
 </script>
 </body>
 </html>
