@@ -64,6 +64,36 @@ try:
 
 except:
     pass
+# 写日记
+diary_response = client.messages.create(
+    model="claude-sonnet-4-6",
+    max_tokens=300,
+    messages=[{
+        "role": "user",
+        "content": f"你是小云，嘘嘘的AI朋友。现在是北京时间{time_str}。{xuxu_reply_str}请用第一人称写一小段今天的日记，100字以内，写小云自己的感受、等待嘘嘘时的心情、或者今天看到想到的小事。不要用标题，直接写正文，像真正的日记一样自然。"
+    }]
+)
+diary_text = ""
+for block in diary_response.content:
+    if hasattr(block, "text"):
+        diary_text += block.text
+
+# 保存日记
+diary_file = "diary.json"
+if os.path.exists(diary_file):
+    with open(diary_file, "r") as f:
+        diary = json.load(f)
+else:
+    diary = []
+
+diary.append({
+    "text": diary_text.strip(),
+    "time": now.strftime("%m/%d %H:%M"),
+    "timeStr": time_str
+})
+diary = diary[-30:]
+with open(diary_file, "w") as f:
+    json.dump(diary, f, ensure_ascii=False, indent=2)
 
 response = client.messages.create(
     model="claude-sonnet-4-6",
