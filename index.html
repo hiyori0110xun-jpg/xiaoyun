@@ -618,7 +618,12 @@ async function loadAllMessages() {
       } catch(e) {}
 
       // 合并按时间排序
-      const all = [...cloudMsgs, ...xuxuMsgs].sort((a,b) => a.time.localeCompare(b.time));
+      function parseTime(t) {
+  const parts = t.replace(/\//g,'-').split(' ');
+  return new Date('2026-' + parts[0] + ' ' + parts[1]);
+}
+const all = [...cloudMsgs, ...xuxuMsgs].sort((a,b) => parseTime(a.time) - parseTime(b.time));
+
 
       const msgList = document.getElementById('msgList');
       msgList.innerHTML = '';
