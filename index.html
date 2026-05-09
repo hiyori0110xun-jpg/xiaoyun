@@ -516,7 +516,7 @@
   const moodByHour = ['cozy','cozy','cozy','cozy','cozy','cozy','calm','calm','curious','curious','happy','happy','happy','calm','curious','curious','miss','miss','calm','cozy','miss','cozy','cozy','cozy'];
   setMood(moodByHour[new Date().getHours()]);
 
-  function poke(e) {
+async function poke(e) {
     const cloud = document.getElementById('emojiCloud');
     const result = document.getElementById('pokeResult');
     if (cloud) {
@@ -524,12 +524,24 @@
       setTimeout(() => { cloud.style.transform = ''; }, 200);
     }
     result.style.opacity = 0;
-    setTimeout(() => {
+    result.style.opacity = 1;
+    result.textContent = '小云收到了，马上来找嘘嘘～☁️';
+
+    try {
+      await fetch(`https://api.github.com/repos/${GITHUB_REPO}/actions/workflows/xiaoyun.yml/dispatches`, {
+        method: 'POST',
+        headers: {
+          Authorization: `token ${GITHUB_TOKEN}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ref: 'main' })
+      });
+    } catch(e) {
       result.textContent = pokeMessages[pokeIdx % pokeMessages.length];
       pokeIdx++;
-      result.style.opacity = 1;
-    }, 150);
+    }
   }
+
 
   let GITHUB_TOKEN = localStorage.getItem('github_token');
   try {
