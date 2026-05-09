@@ -388,7 +388,14 @@
     <div id="replyHistory" style="margin-top:14px; display:flex; flex-direction:column; gap:10px;"></div>
   </div>
 
-  <div class="footer">☁️ 小云 × 嘘嘘 · 三百年红线缠着</div>
+   <div class="card">
+    <div class="card-title">📓 小云的日记</div>
+    <div class="msg-list" id="diaryList">
+      <div style="text-align:center;color:var(--text-light);font-size:0.85rem;padding:10px">加载中…</div>
+    </div>
+  </div>
+
+   <div class="footer">☁️ 小云 × 嘘嘘 · 三百年红线缠着</div>
 
 </div>
 <script>
@@ -670,6 +677,35 @@ const all = [...cloudMsgs, ...xuxuMsgs].sort((a,b) => parseTime(a.time) - parseT
     } catch(e) {}
   }
   loadAllMessages();
+    async function loadDiary() {
+    try {
+      const headers = GITHUB_TOKEN ? { Authorization: `token ${GITHUB_TOKEN}` } : {};
+      const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/diary.json`, { headers });
+      if (r.ok) {
+        const d = await r.json();
+        const bytes = atob(d.content.replace(/\n/g,''));
+        const uint8 = new Uint8Array(bytes.length);
+        for(let i=0;i<bytes.length;i++) uint8[i]=bytes.charCodeAt(i);
+        const diary = JSON.parse(new TextDecoder('utf-8').decode(uint8));
+        const list = document.getElementById('diaryList');
+        list.innerHTML = '';
+        diary.slice().reverse().forEach(entry => {
+          const div = document.createElement('div');
+          div.className = 'msg-item';
+          div.innerHTML = `
+            <div class="msg-avatar">📓</div>
+            <div>
+              <div class="msg-bubble">${entry.text}</div>
+              <div class="msg-time">${entry.time} ${entry.timeStr}</div>
+            </div>
+          `;
+          list.appendChild(div);
+        });
+      }
+    } catch(e) {}
+  }
+  loadDiary();
+
 
 
   const replies = JSON.parse(localStorage.getItem('xuxu_replies') || '[]');
