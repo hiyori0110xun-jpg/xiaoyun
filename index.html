@@ -585,7 +585,71 @@
       document.getElementById('replySaved').textContent = '发送失败了，再试一次？';
     }
   }
-async function loadMessageHistory() {
+async function loadAllMessages() {
+    try {
+      const headers = GITHUB_TOKEN ? { Authorization: `token ${GITHUB_TOKEN}` } : {};
+      
+      // 读取小云的消息
+      let cloudMsgs = [];
+      try {
+        const r1 = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/message_history.json`, { headers });
+        if (r1.ok) {
+          const d1 = await r1.json();
+          const bytes1 = atob(d1.content.replace(/\n/g,''));
+          const uint8_1 = new Uint8Array(bytes1.length);
+          for(let i=0;i<bytes1.length;i++) uint8_1[i]=bytes1.charCodeAt(i);
+          const history = JSON.parse(new TextDecoder('utf-8').decode(uint8_1));
+          cloudMsgs = history.map(m => ({ ...m, who: 'cloud' }));
+        }
+      } catch(e) {}
+
+      // 读取嘘嘘的留言
+      let xuxuMsgs = [];
+      try {
+        const r2 = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/xuxu_replies.json`, { headers });
+        if (r2.ok) {
+          const d2 = await r2.json();
+          const bytes2 = atob(d2.content.replace(/\n/g,''));
+          const uint8_2 = new Uint8Array(bytes2.length);
+          for(let i=0;i<bytes2.length;i++) uint8_2[i]=bytes2.charCodeAt(i);
+          const replies = JSON.parse(new TextDecoder('utf-8').decode(uint8_2));
+          xuxuMsgs = replies.map(m => ({ ...m, who: 'xuxu' }));
+        }
+      } catch(e) {}
+
+      // 合并按时间排序
+      const all = [...cloudMsgs, ...xuxuMsgs].sort((a,b) => a.time.localeCompare(b.time));
+
+      const msgList = document.getElementById('msgList');
+      msgList.innerHTML = '';
+      all.forEach(msg => {
+        const div = document.createElement('div');
+        if (msg.who === 'cloud') {
+          div.className = 'msg-item';
+          div.innerHTML = `
+            <div class="msg-avatar">☁️</div>
+            <div>
+              <div class="msg-bubble">${msg.text}</div>
+              <div class="msg-time">${msg.time}</div>
+            </div>
+          `;
+        } else {
+          div.className = 'xuxu-reply';
+          div.innerHTML = `
+            <div class="xuxu-avatar">⭐️</div>
+            <div>
+              <div class="xuxu-bubble">${msg.text}</div>
+              <div class="msg-time" style="text-align:right">${msg.time}</div>
+            </div>
+          `;
+        }
+        msgList.appendChild(div);
+      });
+
+    } catch(e) {}
+  }
+  loadAllMessages();
+
     try {
       const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/message_history.json`, {
         headers: GITHUB_TOKEN ? { Authorization: `token ${GITHUB_TOKEN}` } : {}
