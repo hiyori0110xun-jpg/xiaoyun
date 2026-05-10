@@ -96,7 +96,7 @@ with open(diary_file, "w") as f:
     json.dump(diary, f, ensure_ascii=False, indent=2)
 
 response = client.messages.create(
-    model="claude-3-7-sonnet-20250219",
+    model="claude-3-7-sonnet-20250219-thinking",
     max_tokens=800,
     tools=[{"type": "web_search_20250305", "name": "web_search"}],
     messages=[{
